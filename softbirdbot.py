@@ -9,18 +9,14 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 
 cog_folder = "cogs"
 
-client = commands.Bot(command_prefix=';')
+client = commands.Bot(command_prefix='.', help_command=None)
 
 @client.event
 async def on_ready():
     print("main bot loaded")
 
-@client.command()
-async def hello(ctx): #context (ctx) is passed to function automatically
-    await ctx.send(f"hi {client.latency}")
-
 # load cog
-@client.command()
+@client.command(hidden=True)
 @commands.is_owner()
 async def load(ctx, extension):
     try:
@@ -31,13 +27,13 @@ async def load(ctx, extension):
         await ctx.send(f"{extension} already loaded!")
 
 # unload cog
-@client.command()
+@client.command(hidden=True)
 @commands.is_owner()
 async def unload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
     await ctx.send(f"Unloaded {extension}!")
 
-@client.command()
+@client.command(hidden=True)
 @commands.is_owner()
 async def reload(ctx, extension):
     client.reload_extension(f"cogs.{extension}")

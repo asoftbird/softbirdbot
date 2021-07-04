@@ -4,8 +4,8 @@ import re
 import regex
 from discord.ext import commands
 
-
 class Dice(commands.Cog):
+    """Provides commands related to dice rolling"""
     def __init__(self, client):
         self.client = client\
     
@@ -22,7 +22,10 @@ class Dice(commands.Cog):
     async def on_ready(self):
         print(f"Cog Dice initialized")
 
-    @commands.command()
+    @commands.command(
+        aliases=['r', 'rtd'], 
+        help="Roll a dice with [count]d[dice size]. Optional arguments: +/-[modifier], 'avg' for average roll, 'list' to display all rolls.",
+        usage=".roll 2d20 +5 list\n Aliases: '.r' or '.rtd'.")
     async def roll(self, ctx, *args):
         try: 
             print(args)
@@ -49,7 +52,7 @@ class Dice(commands.Cog):
                             if "list" in args:
                                 list_str = f' List: {*roll_list,},'
                                 
-                            if "average" in args:
+                            if "avg" in args:
                                 average_str = f' Average: {avg},'
                             
                             if len(list(filter(lambda s: "+" in s, args))) > 0:
@@ -81,11 +84,6 @@ class Dice(commands.Cog):
                 await ctx.send("Invalid roll!")
         except:
             await ctx.send("Not enough arguments!")
-
-
-
-        
-
 
 def setup(client):
     client.add_cog(Dice(client))
