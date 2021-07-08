@@ -33,13 +33,29 @@ async def unload(ctx, extension):
     client.unload_extension(f"cogs.{extension}")
     await ctx.send(f"Unloaded {extension}!")
 
-@client.command(hidden=True)
+# reload cog
+@client.command(hidden=True, aliases=[';rl'])
 @commands.is_owner()
 async def reload(ctx, extension):
     client.reload_extension(f"cogs.{extension}")
     await ctx.send(f"Reloaded {extension}!")
 
+# reload all cogs
+@client.command(hidden=True, aliases=[';ra'])
+@commands.is_owner()
+async def reloadall(ctx):
+    exlist = []
+    for entry in client.extensions:
+        exlist.append(entry)
+        print(exlist)
+    
+    for i, ext in enumerate(exlist):
+        client.reload_extension(exlist[i])
+    
+    await ctx.send(f"Reloaded {*exlist,}!")
 
+
+# load all cogs when bot starts
 for filename in os.listdir(cog_folder):
     try:
         if filename.endswith(".py"):
