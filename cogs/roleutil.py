@@ -13,7 +13,8 @@ roles_removable_ids = [role_spanjool_id, role_praat_id, role_ridder_id]
 
 class RoleUtils(commands.Cog):
     def __init__(self, client):
-        self.client = client 
+        self.client = client
+        
 
     @commands.Cog.listener() #event decorator for inside cogs
     async def on_ready(self):
@@ -28,11 +29,13 @@ class RoleUtils(commands.Cog):
         else:
             return False
 
-    @commands.command(aliases=['g'])
-    async def getRoles(self, ctx, member: discord.Member, role_name: discord.Role):
-        rolecheck = self.checkMemberHasRole(member, role_name)
-        await ctx.send(f"Does {member} have role {role_name}? {rolecheck}")
+    async def setRoles(self, member: discord.Member, roles):
+        await member.add_roles(roles)
 
+    async def removeRoles(self, member: discord.Member, roles):
+        await member.remove_roles(roles)
+
+    # ADD Spanjool REMOVE ridder, praat
     @commands.command(aliases=['s'])
     async def spanjool(self, ctx, member: discord.Member):
         guild = ctx.guild
@@ -40,12 +43,13 @@ class RoleUtils(commands.Cog):
 
         if not self.checkMemberHasRole(member, __role_spanjool):
             for i, id in enumerate(roles_removable_ids):
-                await member.remove_roles(guild.get_role(id))
-            await member.add_roles(__role_spanjool)
+                await self.removeRoles(member, guild.get_role(id))
+            await self.setRoles(member, __role_spanjool)
             await ctx.send(f"Gave {member.display_name} role {__role_spanjool}.")
         else:
             await ctx.send(f"User {member.display_name} already has this role!")
 
+    # ADD praat REMOVE spanjool
     @commands.command(aliases=['os'])
     async def ontspanjool(self, ctx, member: discord.Member):
         guild = ctx.guild
@@ -53,12 +57,13 @@ class RoleUtils(commands.Cog):
         __role_praat = guild.get_role(role_praat_id)
 
         if self.checkMemberHasRole(member, __role_spanjool):
-            await member.remove_roles(__role_spanjool)
-            await member.add_roles(__role_praat)
+            await self.removeRoles(member, __role_spanjool)
+            await self.setRoles(member, __role_praat)
             await ctx.send(f"Removed {__role_spanjool} from {member.display_name}.")
         else:
             await ctx.send(f"{member.display_name} does not have {__role_spanjool}!")
 
+    # ADD ridder REMOVE spanjool
     @commands.command(aliases=['r'])
     async def ridder(self, ctx, member: discord.Member):
         guild = ctx.guild
@@ -66,19 +71,20 @@ class RoleUtils(commands.Cog):
         __role_spanjool = guild.get_role(role_spanjool_id)
 
         if not self.checkMemberHasRole(member, __role_ridder):
-            await member.add_roles(__role_ridder)
-            await member.remove_roles(__role_spanjool)
+            await self.setRoles(member, __role_ridder)
+            await self.removeRoles(member, __role_spanjool)
             await ctx.send(f"Gave {member.display_name} role {__role_ridder}.")
         else:
             await ctx.send(f"User {member.display_name} already has this role!")
 
+    # REMOVE ridder
     @commands.command(aliases=['or'])
     async def ontridder(self, ctx, member: discord.Member):
         guild = ctx.guild
         __role_ridder = guild.get_role(role_ridder_id)
 
         if self.checkMemberHasRole(member, __role_ridder):
-            await member.remove_roles(__role_ridder)
+            await self.removeRoles(member, __role_ridder)
             await ctx.send(f"Removed {__role_ridder} from {member.display_name}.")
         else:
             await ctx.send(f"{member.display_name} does not have {__role_ridder}!")
