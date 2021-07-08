@@ -7,7 +7,7 @@ from discord.ext import commands
 class Dice(commands.Cog):
     """Provides commands related to dice rolling"""
     def __init__(self, client):
-        self.client = client\
+        self.client = client
     
     def __randomRoll(self, repeats, dice_size):
 
@@ -23,7 +23,7 @@ class Dice(commands.Cog):
         print(f"Cog Dice initialized")
 
     @commands.command(
-        aliases=['r', 'rtd'], 
+        aliases=['rtd'], 
         help="Roll a dice with [count]d[dice size]. Optional arguments: +/-[modifier], 'avg' for average roll, 'list' to display all rolls.",
         usage=".roll 2d20 +5 list\n Aliases: '.r' or '.rtd'.")
     async def roll(self, ctx, *args):
