@@ -2,41 +2,13 @@ import discord
 import time
 import re
 from discord.ext import commands
-import utils.util
-
-HOUR = 3600
-MINUTE = 60
-DAY = HOUR * 24
-MONTH = DAY * 30
-YEAR = DAY * 365
-
+from utils.util import convertTimeStringToSeconds, sleepUntilUnixtime
 
 class Scheduler(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    def convertTimeStringToSeconds(self, int_time, unit):
-        # convert input time and unit to equivalent in seconds
-        int_time = int(int_time)
-        print(f"Got {int_time} time and unit {unit}")
-        print(f"Type int_time: {type(int_time)}, type unit: {type(unit)}")
-        if unit == "seconde" or unit == "seconden":
-            return int_time
-        elif unit == "minuut" or unit == "minuten":
-            print("match MINUUT")
-            return int_time * MINUTE
-        elif unit == "uur" or unit == "uren":
-            print("match UUR")
-            return int_time * HOUR
-        elif unit == "dag" or unit == "dagen":
-            return int_time * DAY
-        elif unit == "maand" or unit == "maanden":
-            return int_time * MONTH
-        elif unit == "jaar" or unit == "jaren":
-            return int_time * YEAR
-        else:
-            return 60
-
+    
     @commands.Cog.listener() #event decorator for inside cogs
     async def on_ready(self):
         print(f"Cog Scheduler initialized")
@@ -58,7 +30,8 @@ class Scheduler(commands.Cog):
                 #await ctx.send(f"args: {args}, string:  {arg_string}, result: {result.group('tijd'), result.group('eenheid')}")
                 print(result.group('tijd'))
                 print(result.group('eenheid'))
-                time_seconds = self.convertTimeStringToSeconds(result.group('tijd'), result.group('eenheid'))
+                time_seconds = convertTimeStringToSeconds(result.group('tijd'), result.group('eenheid'))
+
                 await ctx.send(f"Time given: {time_seconds} seconden")
 
         else:
