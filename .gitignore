@@ -1,7 +1,7 @@
 
 # VSCworkspace
 *.code-workspace
-settings.json
+.vscode/
 
 
 
@@ -131,5 +131,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+.vscode/settings.json
 .vscode/settings.json
 .vscode/settings.json
