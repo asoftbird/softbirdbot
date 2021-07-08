@@ -1,7 +1,5 @@
 import discord
 import random
-import re
-import regex
 from discord.ext import commands
 
 class Dice(commands.Cog):
