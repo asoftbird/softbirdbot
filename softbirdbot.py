@@ -9,7 +9,7 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 
 cog_folder = "cogs"
 
-client = commands.Bot(command_prefix='.', help_command=None)
+client = commands.Bot(command_prefix=';', help_command=None)
 
 @client.event
 async def on_ready():
