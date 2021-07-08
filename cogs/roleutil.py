@@ -14,7 +14,6 @@ roles_removable_ids = [role_spanjool_id, role_praat_id, role_ridder_id]
 class RoleUtils(commands.Cog):
     def __init__(self, client):
         self.client = client
-        
 
     @commands.Cog.listener() #event decorator for inside cogs
     async def on_ready(self):
