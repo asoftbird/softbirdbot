@@ -32,6 +32,9 @@ async def sleepUntilUnixtime(time_target, result=None):
         delta -= MAX_ASYNCIO_SECONDS
     return await asyncio.sleep(max(delta, 0), result)
 
+async def viewAsyncioTasks():
+    return asyncio.all_tasks()
+
 def convertTimeStringToSeconds(int_time, unit):
     # convert input time and unit to equivalent in seconds
     int_time = int(int_time)
