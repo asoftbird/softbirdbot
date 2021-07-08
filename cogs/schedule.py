@@ -28,6 +28,7 @@ class Scheduler(commands.Cog):
     # async def ping(self, ctx):
     #     await ctx.send("qwer")
 
+    # TODO: make these less ugly
     async def TASKprintMessageAfterDelay(self, ctx, expire_time):
         total_time = expire_time + int(time.time())
         await sleepUntilUnixtime(total_time)
@@ -46,6 +47,7 @@ class Scheduler(commands.Cog):
         await roleHelper.removeRoles(self, member, __role_spanjool)
         await roleHelper.setRoles(self, member, __role_praat)
 
+    # TODO error handling
     @commands.command()
     async def time(self, ctx, member: discord.Member, *args):
         arg_string = ""
@@ -53,7 +55,7 @@ class Scheduler(commands.Cog):
         if len(args) > 0:
             for i, argument in enumerate(args):
                 arg_string += argument + " "
-
+            #TODO implement miljoen voor shitpostredenen
             result = re.search(r'(?:over)\s(?P<tijd>\d{1,2})\s(?P<eenheid>seconde|seconden|minuut|minuten|uur|uren|dag|dagen|maand|maanden|jaar|jaren)', arg_string)
             if result != None:
                 #await ctx.send(f"args: {args}, string:  {arg_string}, result: {result.group('tijd'), result.group('eenheid')}")
@@ -62,7 +64,7 @@ class Scheduler(commands.Cog):
                 time_seconds = convertTimeStringToSeconds(result.group('tijd'), result.group('eenheid'))
 
                 await ctx.send(f"Time given: {time_seconds} seconden")
-                #asyncio.create_task(self.TASKprintMessageAfterDelay(ctx, time_seconds), name="asdf")
+                # TODO implement named tasks with short UUID for cancellation purposes
                 asyncio.create_task(self.TASK_spanjool(ctx, member, time_seconds))
                 print(await viewAsyncioTasks())
 
